@@ -6,7 +6,6 @@
 package com.view;
 
 import com.presenter.interfaces.IPresenter;
-import com.view.interfaces.IConnectView;
 import com.view.interfaces.IView;
 
 import javax.swing.JFrame;

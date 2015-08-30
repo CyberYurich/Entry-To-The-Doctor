@@ -6,14 +6,13 @@
 package com.view.interfaces;
 
 import java.util.Date;
-import javax.swing.table.TableModel;
+import java.util.Vector;
 
 /**
  *
  * @author ALEX
  */
 public interface IEntriesView extends IView{
-    void setCurentDate(Date date);
-    
-    TableModel getTableModel();
+    void setDataTable(Vector<Vector<Object>> dataTable);
+    void setCurentDateAndTime(Date date);
 }

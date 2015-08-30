@@ -7,8 +7,6 @@ package com.view;
 
 import com.view.interfaces.IConnectView;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Vector;
 
 /**

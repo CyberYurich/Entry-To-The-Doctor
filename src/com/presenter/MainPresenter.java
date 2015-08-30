@@ -14,24 +14,15 @@ import com.view.interfaces.IConnectView;
 import com.view.interfaces.IEntriesView;
 
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ALEX
  */
 public class MainPresenter implements IPresenter{
-    
-    private static final int ONE_MINUTE_IN_MILLISECS = 60000;
-    
+
     private final IDbModel dbModel;
     private final ICalendarView calendarView;
     private final IEntriesView entriesView;
@@ -82,15 +73,13 @@ public class MainPresenter implements IPresenter{
     @Override
     public void showEntries() {
         try {
-            Date date = calendarView.getCheckedDate();           
-            entriesView.setCurentDate(date);
+            Date date = calendarView.getCheckedDate();
             
             Vector<Vector<Object>> dataTable = dbModel.getDataTableByDate(date); 
-            DefaultTableModel defTableModel = (DefaultTableModel)entriesView.getTableModel();
-            clearTableModel(defTableModel);
-            addTableModelData(defTableModel, dataTable);
-            addTableModelTime(defTableModel, date);
-
+            
+            entriesView.setDataTable(dataTable);
+            entriesView.setCurentDateAndTime(date);
+            
             calendarView.closeView();
             entriesView.showView();
             
@@ -100,7 +89,8 @@ public class MainPresenter implements IPresenter{
                                    + "понедельник, среда и Суббота.",
                                      "Неправильный день недели");
         } catch (SQLException ex) {
-            messageService.ShowError("Соединение с базой данных утеряно.",
+            messageService.ShowError("Соединение с базой данных утеряно\n"
+                                   + "или отсутствует таблица с данными.",
                                      "Ошибка подключения");
             
             calendarView.lockEntriesView();
@@ -135,48 +125,4 @@ public class MainPresenter implements IPresenter{
         }
     }
     
-    private void clearTableModel(DefaultTableModel model) {
-        while (model.getRowCount() > 0) {
-            model.removeRow(0);
-        }
-    }
-    
-    private void addTableModelData(DefaultTableModel model,
-                                   Vector<Vector<Object>> dataTable) {        
-        for (Vector<Object> row : dataTable) {
-            model.addRow(row);
-        }               
-    }
-    
-    private void addTableModelTime(DefaultTableModel model,
-                                   Date date) {        
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        
-        try {
-            // create time and format
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-            Date timeForRows;
-            
-            if (dayOfWeek == Calendar.SATURDAY) {
-                // set start time on 13:00
-                timeForRows = timeFormat.parse("13:00");
-            } else {
-                // set start time on 16:00
-                timeForRows = timeFormat.parse("16:00");
-            }
-            
-            // insert time in each row and increments by 30 minutes
-            for (int i = 0; i < model.getRowCount(); ++i) {        
-                model.setValueAt(timeFormat.format(timeForRows), i, 0);
-                
-                long t = timeForRows.getTime();
-                timeForRows = new Date(t + (30 * ONE_MINUTE_IN_MILLISECS));
-            }
-        } catch (ParseException ex) {
-                Logger.getLogger(MainPresenter.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-  
 }

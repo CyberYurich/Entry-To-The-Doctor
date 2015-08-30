@@ -11,8 +11,6 @@ import com.view.interfaces.ICalendarView;
 import com.view.interfaces.IConnectView;
 import com.view.interfaces.IEntriesView;
 
-import java.util.Vector;
-
 /**
  *
  * @author ALEX
