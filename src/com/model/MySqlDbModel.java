@@ -46,11 +46,6 @@ public class MySqlDbModel implements IDbModel{
     private ResultSet resultSet = null;
     
     @Override
-    public Connection getConnection() {
-        return connection;
-    }
-    
-    @Override
     public void setConnectionParameters(Vector<String> parameters)
             throws SQLException{
         String url = "jdbc:mysql://" + parameters.elementAt(0) +

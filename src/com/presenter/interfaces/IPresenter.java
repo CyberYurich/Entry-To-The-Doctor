@@ -5,25 +5,13 @@
  */
 package com.presenter.interfaces;
 
-import com.messageServise.interfaces.IMessageService;
-import com.model.interfaces.IDbModel;
-import com.view.interfaces.ICalendarView;
-import com.view.interfaces.IConnectView;
-import com.view.interfaces.IEntriesView;
-
 /**
  *
  * @author ALEX
  */
-public interface IPresenter {
-    IDbModel getDbModel();
-    ICalendarView getCalendarView();
-    IEntriesView getEntriesView();
-    IConnectView getConnectView();
-    IMessageService getMessageService();
-    
-    void showCalendar();
+public interface IPresenter {  
     void showEntries();
+    void showCalendar();
     void showConnect();   
     void createConnection();
 }

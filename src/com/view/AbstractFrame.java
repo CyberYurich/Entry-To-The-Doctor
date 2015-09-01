@@ -17,11 +17,6 @@ import javax.swing.JFrame;
 public abstract class AbstractFrame extends JFrame implements IView {
     
     protected IPresenter presenter;
-
-    @Override
-    public IPresenter getPresenter() {
-        return presenter;
-    }
     
     @Override
     public void setPresenter(IPresenter presenter) {

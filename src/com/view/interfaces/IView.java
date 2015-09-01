@@ -12,9 +12,7 @@ import com.presenter.interfaces.IPresenter;
  * @author ALEX
  */
 public interface IView {
-    IPresenter getPresenter();
-    void setPresenter(IPresenter presenter);
-    
+    void setPresenter(IPresenter presenter);    
     void showView();
     void closeView();
 }

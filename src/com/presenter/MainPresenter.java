@@ -29,31 +29,6 @@ public class MainPresenter implements IPresenter{
     private final IConnectView connectView;
     private final IMessageService messageService;
     
-    @Override
-    public IDbModel getDbModel() {
-        return dbModel;
-    }
-
-    @Override
-    public ICalendarView getCalendarView() {
-        return calendarView;
-    }
-
-    @Override
-    public IEntriesView getEntriesView() {
-        return entriesView;
-    }
-    
-    @Override
-    public IConnectView getConnectView() {
-        return connectView;
-    }
-    
-    @Override
-    public IMessageService getMessageService() {
-        return messageService;
-    }
-
     public MainPresenter(IDbModel dbModel,
                          ICalendarView calendarView, 
                          IEntriesView entriesView,
