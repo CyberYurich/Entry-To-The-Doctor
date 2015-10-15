@@ -28,14 +28,8 @@ public class MySqlDbModel implements IDbModel{
     private static final String DB_NAME = "entry_to_the_doctor";
     private static final String PATIENTS_TABLE_NAME = "patients_entries";
     private static final int TABLE_ROW_COUNT = 8;
-    private static final String COLUMNS_FOR_QUERY = "place_in_queue, "
-                                                  + "lastname, "
-                                                  + "firstname, "
-                                                  + "middlename, "
-                                                  + "phone, "
-                                                  + "email, "
-                                                  + "shoe_size, "
-                                                  + "product_model";
+    private static final String COLUMNS_FOR_QUERY = 
+            "place_in_queue, lastname, firstname, middlename, phone, email, shoe_size, product_model";
     
     private String url = "";
     private String username = "";
@@ -48,8 +42,14 @@ public class MySqlDbModel implements IDbModel{
     @Override
     public void setConnectionParameters(Vector<String> parameters)
             throws SQLException{
-        String url = "jdbc:mysql://" + parameters.elementAt(0) +
-                     ":" + parameters.elementAt(1) + "/" + DB_NAME;
+        String url = new StringBuilder(60)
+                .append("jdbc:mysql://")
+                .append(parameters.elementAt(0))
+                .append(":")
+                .append(parameters.elementAt(1))
+                .append("/")
+                .append(DB_NAME)
+                .toString();
         String username = parameters.elementAt(2);
         String password = parameters.elementAt(3);
         
@@ -81,9 +81,14 @@ public class MySqlDbModel implements IDbModel{
         try {
             connection = DriverManager.getConnection(url, username, password);
             
-            String query = "select " + COLUMNS_FOR_QUERY + 
-                           " from "+ PATIENTS_TABLE_NAME +
-                           " where date = ?";           
+            String query = new StringBuilder(150)
+                    .append("select ")
+                    .append(COLUMNS_FOR_QUERY)
+                    .append(" from ")
+                    .append(PATIENTS_TABLE_NAME)
+                    .append(" where date = ?")
+                    .toString();
+           
             statement = connection.prepareStatement(query);
             statement.setDate(1, sqlDate);
             
