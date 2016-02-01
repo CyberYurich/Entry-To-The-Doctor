@@ -17,26 +17,27 @@ import com.view.EntriesFrame;
  * @author ALEX
  */
 public class Main {
-    
+
     public static void main(String[] args) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 MySqlDbModel mysqlModel = new MySqlDbModel();
                 CalendarFrame calendarFrame = new CalendarFrame();
                 EntriesFrame entriesFrame = new EntriesFrame();
                 ConnectFrame connectFrame = new ConnectFrame();
                 MessageService messageService = new MessageService();
-        
+
                 MainPresenter mainPresenter = new MainPresenter(mysqlModel,
                                                                 calendarFrame,
                                                                 entriesFrame,
                                                                 connectFrame,
                                                                 messageService);
-                
+
                 calendarFrame.setVisible(true);
             }
         });
     }
-    
+
 }

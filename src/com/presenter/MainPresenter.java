@@ -59,14 +59,14 @@ public class MainPresenter implements IPresenter{
             entriesView.showView();
             
         } catch (WrongDayOfWeekException ex) {
-            messageService.ShowError(new StringBuilder(90)
+            messageService.showError(new StringBuilder(90)
                     .append("Выбран неправильный день недели.\n")
                     .append("Дни недели для приема: ")
                     .append("понедельник, среда и Суббота.")
                     .toString(),
                     "Неправильный день недели");
         } catch (SQLException ex) {
-            messageService.ShowError(new StringBuilder(70)
+            messageService.showError(new StringBuilder(70)
                     .append("Соединение с базой данных утеряно\n")
                     .append("или отсутствует таблица с данными.")
                     .toString(),
@@ -94,12 +94,12 @@ public class MainPresenter implements IPresenter{
         
         try {
             dbModel.setConnectionParameters(connectView.getConnectParameters());
-            messageService.ShowInformation("Соединение с базой данных установлено.",
+            messageService.showInformation("Соединение с базой данных установлено.",
                                            "Успешное подключение");
             calendarView.unlockEntriesView();
             showCalendar();
         } catch (SQLException ex) {
-            messageService.ShowError("Невозможно подключиться к базе данных.",
+            messageService.showError("Невозможно подключиться к базе данных.",
                                      "Ошибка подключения");
         }
     }

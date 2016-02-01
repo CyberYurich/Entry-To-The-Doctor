@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class MessageService implements IMessageService{
 
     @Override
-    public void ShowError(String message, String title) {
+    public void showError(String message, String title) {
         JOptionPane.showMessageDialog(null,
                                       message,
                                       title,
@@ -24,7 +24,7 @@ public class MessageService implements IMessageService{
     }
 
     @Override
-    public void ShowInformation(String message, String title) {
+    public void showInformation(String message, String title) {
         JOptionPane.showMessageDialog(null,
                                       message,
                                       title,
@@ -32,7 +32,7 @@ public class MessageService implements IMessageService{
     }
 
     @Override
-    public void ShowWarning(String message, String title) {
+    public void showWarning(String message, String title) {
         JOptionPane.showMessageDialog(null,
                                       message,
                                       title,
