@@ -14,5 +14,5 @@ import java.util.Vector;
  */
 public interface IEntriesView extends IView{
     void setDataTable(Vector<Vector<Object>> dataTable);
-    void setCurentDateAndTime(Date date);
+    void setCurentDate(Date date);
 }

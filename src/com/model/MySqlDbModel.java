@@ -13,8 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,9 +27,8 @@ public class MySqlDbModel implements IDbModel{
     
     private static final String DB_NAME = "entry_to_the_doctor";
     private static final String PATIENTS_TABLE_NAME = "patients_entries";
-    private static final int TABLE_ROW_COUNT = 8;
     private static final String COLUMNS_FOR_QUERY = 
-            "place_in_queue, lastname, firstname, middlename, phone, email, shoe_size, product_model";
+            "time, lastname, firstname, middlename, phone, email, shoe_size, product_model";
     
     private String url = "";
     private String username = "";
@@ -111,36 +110,49 @@ public class MySqlDbModel implements IDbModel{
     }
     
     private Vector<Vector<Object>> buildDataTable(ResultSet resultSet)
-        throws SQLException { 
+        throws SQLException {
         
         ResultSetMetaData metaData = resultSet.getMetaData();   
         int columnCount = metaData.getColumnCount();
         
-        /**
-         * make map of db data for sorting by key(place_in_queue)
-         */
-        Map<Integer, Vector<Object>> dataMap = new HashMap<>(); 
+        Vector<Vector<Object>> dataTable = new Vector<>();
         while (resultSet.next()) {
             Vector<Object> row = new Vector<>();
             for (int i = 1; i <= columnCount; ++i) {
                 row.add(resultSet.getObject(i));
             }
-            Integer placeInQueue = resultSet.getInt(1);
-            dataMap.put(placeInQueue, row);
-        }
-        
-        /**
-         * make 2d vector with sorted by queue data
-         */
-        Vector<Vector<Object>> dataTable = new Vector<>();
-        for (int i = 0; i < TABLE_ROW_COUNT; ++i) {
-            if (dataMap.get(i) != null) {
-                dataTable.add(dataMap.get(i));
-            } else {
-                dataTable.add(new Vector<>());
-            }
-        }        
+            dataTable.add(row);
+        }       
         return dataTable;
+        
+//        ResultSetMetaData metaData = resultSet.getMetaData();   
+//        int columnCount = metaData.getColumnCount();
+//        
+//        /**
+//         * make map of db data for sorting by key(place_in_queue)
+//         */
+//        Map<Integer, Vector<Object>> dataMap = new TreeMap<>(); 
+//        while (resultSet.next()) {
+//            Vector<Object> row = new Vector<>();
+//            for (int i = 1; i <= columnCount; ++i) {
+//                row.add(resultSet.getObject(i));
+//            }
+//            Integer placeInQueue = resultSet.getInt(1);
+//            dataMap.put(placeInQueue, row);
+//        }
+//        
+//        /**
+//         * make 2d vector with sorted by queue data
+//         */
+//        Vector<Vector<Object>> dataTable = new Vector<>();
+//        for (int i = 0; i < TABLE_ROW_COUNT; ++i) {
+//            if (dataMap.get(i) != null) {
+//                dataTable.add(dataMap.get(i));
+//            } else {
+//                dataTable.add(new Vector<>());
+//            }
+//        }        
+//        return dataTable;
     }    
 
 }

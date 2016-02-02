@@ -26,13 +26,10 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView{
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         
         switch (dayOfWeek) {
-            case Calendar.MONDAY :
-            case Calendar.WEDNESDAY :
-            case Calendar.SATURDAY :
+            case Calendar.SUNDAY :
+                throw new WrongDayOfWeekException();    
+            default :
                 return date;
-                
-            default : 
-                throw new WrongDayOfWeekException();
         }
     }
 

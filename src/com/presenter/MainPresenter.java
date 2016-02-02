@@ -22,6 +22,8 @@ import java.util.Vector;
  * @author ALEX
  */
 public class MainPresenter implements IPresenter{
+    
+    private static final int TABLE_ROW_COUNT = 6;
 
     private final IDbModel dbModel;
     private final ICalendarView calendarView;
@@ -53,7 +55,7 @@ public class MainPresenter implements IPresenter{
             Vector<Vector<Object>> dataTable = dbModel.getDataTableByDate(date); 
             
             entriesView.setDataTable(dataTable);
-            entriesView.setCurentDateAndTime(date);
+            entriesView.setCurentDate(date);
             
             calendarView.closeView();
             entriesView.showView();
@@ -61,14 +63,13 @@ public class MainPresenter implements IPresenter{
         } catch (WrongDayOfWeekException ex) {
             messageService.showError(new StringBuilder(90)
                     .append("Выбран неправильный день недели.\n")
-                    .append("Дни недели для приема: ")
-                    .append("понедельник, среда и Суббота.")
+                    .append("Воскресенье - неприемный день.")
                     .toString(),
                     "Неправильный день недели");
         } catch (SQLException ex) {
             messageService.showError(new StringBuilder(70)
                     .append("Соединение с базой данных утеряно\n")
-                    .append("или отсутствует таблица с данными.")
+                    .append("или некорректная таблица с данными.")
                     .toString(),
                     "Ошибка подключения");
             
