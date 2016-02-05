@@ -7,7 +7,8 @@ package com.view;
 
 import com.view.interfaces.IConnectView;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,12 +17,12 @@ import java.util.Vector;
 public class ConnectFrame extends AbstractChildFrame implements IConnectView {
     
     @Override
-    public Vector<String> getConnectParameters() {
-        Vector<String> parameters = new Vector<>();
+    public List<String> getConnectParameters() {
+        List<String> parameters = new ArrayList<>();
         parameters.add(jtxtHostname.getText());
         parameters.add(jtxtPort.getText());
         parameters.add(jtxtUsername.getText());
-        parameters.add(jtxtPassword.getText());
+        parameters.add(new String(jtxtPassword.getPassword()));
         
         return parameters;
     }

@@ -5,12 +5,12 @@
  */
 package com.view.interfaces;
 
-import java.util.Vector;
+import java.util.List;
 
 /**
  *
  * @author ALEX
  */
 public interface IConnectView extends IView{
-    Vector<String> getConnectParameters();
+    List<String> getConnectParameters();
 }

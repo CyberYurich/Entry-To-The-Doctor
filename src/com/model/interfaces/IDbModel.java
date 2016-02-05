@@ -6,6 +6,7 @@
 package com.model.interfaces;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -13,6 +14,6 @@ import java.util.Vector;
  * @author ALEX
  */
 public interface IDbModel {  
-    void setConnectionParameters(Vector<String> parameters) throws SQLException;   
+    void setConnectionParameters(List<String> parameters) throws SQLException;   
     Vector<Vector<Object>> getDataTableByDate(java.util.Date date) throws SQLException;
 }

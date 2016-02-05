@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `entry_to_the_doctor` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `entry_to_the_doctor`;
--- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.24, for Win32 (x86)
 --
 -- Host: localhost    Database: entry_to_the_doctor
 -- ------------------------------------------------------
--- Server version	5.6.26-log
+-- Server version	5.7.8-rc-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,27 +27,18 @@ DROP TABLE IF EXISTS `patients_entries`;
 CREATE TABLE `patients_entries` (
   `id` int(6) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
-  `place_in_queue` int(1) unsigned NOT NULL,
-  `lastname` varchar(45) NOT NULL,
-  `firstname` varchar(45) DEFAULT NULL,
+  `time` time NOT NULL,
+  `lastname` varchar(45) DEFAULT NULL,
+  `firstname` varchar(45) NOT NULL,
   `middlename` varchar(45) DEFAULT NULL,
-  `phone` varchar(15) NOT NULL,
+  `phone` varchar(30) NOT NULL,
   `email` varchar(130) DEFAULT NULL,
-  `shoe_size` int(2) unsigned NOT NULL,
+  `shoe_size` varchar(15) NOT NULL,
   `product_model` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `patients_entries`
---
-
-LOCK TABLES `patients_entries` WRITE;
-/*!40000 ALTER TABLE `patients_entries` DISABLE KEYS */;
-/*!40000 ALTER TABLE `patients_entries` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -58,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-30 14:34:45
+-- Dump completed on 2016-02-05  8:14:54

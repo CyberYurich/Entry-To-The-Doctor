@@ -13,8 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,18 +38,18 @@ public class MySqlDbModel implements IDbModel{
     private ResultSet resultSet = null;
     
     @Override
-    public void setConnectionParameters(Vector<String> parameters)
+    public void setConnectionParameters(List<String> parameters)
             throws SQLException{
         String url = new StringBuilder(60)
                 .append("jdbc:mysql://")
-                .append(parameters.elementAt(0))
+                .append(parameters.get(0))
                 .append(":")
-                .append(parameters.elementAt(1))
+                .append(parameters.get(1))
                 .append("/")
                 .append(DB_NAME)
                 .toString();
-        String username = parameters.elementAt(2);
-        String password = parameters.elementAt(3);
+        String username = parameters.get(2);
+        String password = parameters.get(3);
         
         try {
             connection = DriverManager.getConnection(url, username, password);
@@ -75,7 +74,7 @@ public class MySqlDbModel implements IDbModel{
     @Override
     public Vector<Vector<Object>> getDataTableByDate(java.util.Date date)
             throws SQLException {
-        Vector<Vector<Object>> dataTable = new Vector<>();
+        Vector<Vector<Object>> dataTable;
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         try {
             connection = DriverManager.getConnection(url, username, password);
