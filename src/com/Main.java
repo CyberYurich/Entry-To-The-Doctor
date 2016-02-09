@@ -6,11 +6,17 @@
 package com;
 
 import com.messageServise.MessageService;
+import com.messageServise.interfaces.IMessageService;
 import com.model.MySqlDbModel;
+import com.model.interfaces.IDbModel;
 import com.presenter.MainPresenter;
+import com.presenter.interfaces.IPresenter;
 import com.view.CalendarFrame;
 import com.view.ConnectFrame;
 import com.view.EntriesFrame;
+import com.view.interfaces.ICalendarView;
+import com.view.interfaces.IConnectView;
+import com.view.interfaces.IEntriesView;
 
 /**
  *
@@ -23,19 +29,20 @@ public class Main {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                MySqlDbModel mysqlModel = new MySqlDbModel();
-                CalendarFrame calendarFrame = new CalendarFrame();
-                EntriesFrame entriesFrame = new EntriesFrame();
-                ConnectFrame connectFrame = new ConnectFrame();
-                MessageService messageService = new MessageService();
+                IDbModel dbModel = new MySqlDbModel();
+                ICalendarView calendarView = new CalendarFrame();
+                IEntriesView entriesView = new EntriesFrame();
+                IConnectView connectView = new ConnectFrame();
+                IMessageService messageService = new MessageService();
 
-                MainPresenter mainPresenter = new MainPresenter(mysqlModel,
-                                                                calendarFrame,
-                                                                entriesFrame,
-                                                                connectFrame,
-                                                                messageService);
+                IPresenter presenter = new MainPresenter(
+                        dbModel,
+                        calendarView,
+                        entriesView,
+                        connectView,
+                        messageService);
 
-                calendarFrame.setVisible(true);
+                presenter.showCalendar();
             }
         });
     }
