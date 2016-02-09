@@ -14,7 +14,11 @@ import com.view.interfaces.ICalendarView;
 import com.view.interfaces.IConnectView;
 import com.view.interfaces.IEntriesView;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -112,75 +116,55 @@ public class MainPresenter implements IPresenter {
 
         Vector<Vector<Object>> dataTable = new Vector<>();
         List<IEntry> entriesList = dbModel.readByDate(date);
-        for (IEntry entry : entriesList) {
+        List<Time> timesList = makeTimesForDataTable(date);
+
+        for (Time time : timesList) {
             Vector<Object> row = new Vector<>();
-            row.add(entry.getTime());
-            row.add(entry.getLastname());
-            row.add(entry.getFirstname());
-            row.add(entry.getMiddlename());
-            row.add(entry.getPhone());
-            row.add(entry.getEmail());
-            row.add(entry.getShoeSize());
-            row.add(entry.getProductModel());
+            boolean wasFound = false;
+            for (IEntry entry : entriesList) {
+                if (!time.before(entry.getTime()) && !time.after(entry.getTime())) {
+                    row.add(entry.getTime());
+                    row.add(entry.getLastname());
+                    row.add(entry.getFirstname());
+                    row.add(entry.getMiddlename());
+                    row.add(entry.getPhone());
+                    row.add(entry.getEmail());
+                    row.add(entry.getShoeSize());
+                    row.add(entry.getProductModel());
+                    wasFound = true;
+                    break;
+                }
+            }
+            if (!wasFound) {
+                row.add(time);
+            }
             dataTable.add(row);
         }
-        return dataTable;
-//        ResultSetMetaData metaData = resultSet.getMetaData();
-//        int columnCount = metaData.getColumnCount();
-//
-//        /**
-//         * make map of db data for sorting by key(place_in_queue)
-//         */
-//        Map<Integer, Vector<Object>> dataMap = new TreeMap<>();
-//        while (resultSet.next()) {
-//            Vector<Object> row = new Vector<>();
-//            for (int i = 1; i <= columnCount; ++i) {
-//                row.add(resultSet.getObject(i));
-//            }
-//            Integer placeInQueue = resultSet.getInt(1);
-//            dataMap.put(placeInQueue, row);
-//        }
-//
-//        /**
-//         * make 2d vector with sorted by queue data
-//         */
-//        Vector<Vector<Object>> dataTable = new Vector<>();
-//        for (int i = 0; i < TABLE_ROW_COUNT; ++i) {
-//            if (dataMap.get(i) != null) {
-//                dataTable.add(dataMap.get(i));
-//            } else {
-//                dataTable.add(new Vector<>());
-//            }
-//        }
-//        return dataTable;
 
-//        Calendar calendar = new GregorianCalendar();
-//        calendar.setTime(date);
-//        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-//
-//        try {
-//            // create time and format
-//            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-//            Date timeForRows;
-//
-//            if (dayOfWeek == Calendar.SATURDAY) {
-//                // set start time on 13:00
-//                timeForRows = timeFormat.parse("13:00");
-//            } else {
-//                // set start time on 16:00
-//                timeForRows = timeFormat.parse("16:00");
-//            }
-//
-//            // insert time in each row and increments by 30 minutes
-//            for (int i = 0; i < model.getRowCount(); ++i) {
-//                model.setValueAt(timeFormat.format(timeForRows), i, 0);
-//
-//                long t = timeForRows.getTime();
-//                timeForRows = new Date(t + (30 * ONE_MINUTE_IN_MILLISECS));
-//            }
-//        } catch (ParseException ex) {
-//                Logger.getLogger(MainPresenter.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        return dataTable;
     }
 
+    private List<Time> makeTimesForDataTable(Date date) {
+
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        Time timeForRows;
+
+        if (dayOfWeek == Calendar.SATURDAY) {
+            timeForRows = Time.valueOf("10:00:00");
+        } else {
+            timeForRows = Time.valueOf("17:00:00");
+        }
+
+        List<Time> timesList = new ArrayList<>();
+        for (int i = 0; i < TABLE_ROW_COUNT; ++i) {
+            timesList.add(timeForRows);
+
+            long t = timeForRows.getTime();
+            timeForRows = new Time(t + (30 * ONE_MINUTE_IN_MILLISECS));
+        }
+
+        return timesList;
+    }
 }
