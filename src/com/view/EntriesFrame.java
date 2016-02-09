@@ -5,18 +5,11 @@
  */
 package com.view;
 
-import com.presenter.MainPresenter;
 import com.view.interfaces.IEntriesView;
-
 import java.awt.Component;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -26,25 +19,23 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ALEX
  */
-public class EntriesFrame extends AbstractChildFrame implements IEntriesView{
+public class EntriesFrame extends AbstractChildFrame implements IEntriesView {
 
-    private static final int ONE_MINUTE_IN_MILLISECS = 60000;
-    
     @Override
     public void setDataTable(Vector<Vector<Object>> dataTable) {
-        DefaultTableModel defTableModel = (DefaultTableModel)jtblEntries.getModel();
+        DefaultTableModel defTableModel = (DefaultTableModel) jtblEntries.getModel();
         clearTableModel(defTableModel);
         addTableModelData(defTableModel, dataTable);
     }
-    
+
     @Override
     public void setCurentDate(Date date) {
-        
+
         // set current date
         String title = "Запись пациентов на ";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");       
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         jlblTitle.setText(title + dateFormat.format(date));
-        
+
         // set current time
 //        DefaultTableModel defTableModel = (DefaultTableModel)jtblEntries.getModel();
 //        addTableModelTime(defTableModel, date);
@@ -137,7 +128,7 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView{
                 .addContainerGap()
                 .addComponent(jlblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jscrollEntries, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jscrollEntries, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnClose)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -161,22 +152,22 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView{
         DefaultTableCellRenderer centerRender = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table,
-                                                           Object value,
-                                                           boolean isSelected,
-                                                           boolean hasFocus,
-                                                           int row,
-                                                           int column) {   
-		super.setHorizontalAlignment(SwingConstants.CENTER);
-		super.getTableCellRendererComponent(table,
-                                                    value,
-                                                    isSelected,
-                                                    hasFocus,
-                                                    row,
-                                                    column);
-                return this;   
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                super.setHorizontalAlignment(SwingConstants.CENTER);
+                super.getTableCellRendererComponent(table,
+                        value,
+                        isSelected,
+                        hasFocus,
+                        row,
+                        column);
+                return this;
             }
         };
-        
+
         jtblEntries.getColumnModel().getColumn(0).setCellRenderer(centerRender);
         jtblEntries.getColumnModel().getColumn(6).setCellRenderer(centerRender);
     }
@@ -186,25 +177,25 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView{
             model.removeRow(0);
         }
     }
-    
+
     private void addTableModelData(DefaultTableModel model,
-                                   Vector<Vector<Object>> dataTable) {        
+            Vector<Vector<Object>> dataTable) {
         for (Vector<Object> row : dataTable) {
             model.addRow(row);
-        }               
+        }
     }
-    
+
 //    private void addTableModelTime(DefaultTableModel model,
-//                                   Date date) {        
+//                                   Date date) {
 //        Calendar calendar = new GregorianCalendar();
 //        calendar.setTime(date);
 //        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-//        
+//
 //        try {
 //            // create time and format
 //            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 //            Date timeForRows;
-//            
+//
 //            if (dayOfWeek == Calendar.SATURDAY) {
 //                // set start time on 13:00
 //                timeForRows = timeFormat.parse("13:00");
@@ -212,11 +203,11 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView{
 //                // set start time on 16:00
 //                timeForRows = timeFormat.parse("16:00");
 //            }
-//            
+//
 //            // insert time in each row and increments by 30 minutes
-//            for (int i = 0; i < model.getRowCount(); ++i) {        
+//            for (int i = 0; i < model.getRowCount(); ++i) {
 //                model.setValueAt(timeFormat.format(timeForRows), i, 0);
-//                
+//
 //                long t = timeForRows.getTime();
 //                timeForRows = new Date(t + (30 * ONE_MINUTE_IN_MILLISECS));
 //            }
@@ -224,5 +215,4 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView{
 //                Logger.getLogger(MainPresenter.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-
 }

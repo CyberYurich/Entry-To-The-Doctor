@@ -45,8 +45,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jlblTitle" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jscrollEntries" min="-2" pref="183" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jscrollEntries" min="-2" pref="143" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jbtnClose" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
