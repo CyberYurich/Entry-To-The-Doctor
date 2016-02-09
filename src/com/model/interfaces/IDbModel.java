@@ -28,5 +28,4 @@ public interface IDbModel {
     void update(IEntry entry) throws SQLException, ClassNotFoundException;
 
     void delete(int id) throws SQLException, ClassNotFoundException;
-//    Vector<Vector<Object>> getDataTableByDate(java.util.Date date) throws SQLException;
 }

@@ -31,14 +31,9 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView {
     @Override
     public void setCurentDate(Date date) {
 
-        // set current date
         String title = "Запись пациентов на ";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         jlblTitle.setText(title + dateFormat.format(date));
-
-        // set current time
-//        DefaultTableModel defTableModel = (DefaultTableModel)jtblEntries.getModel();
-//        addTableModelTime(defTableModel, date);
     }
 
     /**
@@ -184,35 +179,4 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView {
             model.addRow(row);
         }
     }
-
-//    private void addTableModelTime(DefaultTableModel model,
-//                                   Date date) {
-//        Calendar calendar = new GregorianCalendar();
-//        calendar.setTime(date);
-//        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-//
-//        try {
-//            // create time and format
-//            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-//            Date timeForRows;
-//
-//            if (dayOfWeek == Calendar.SATURDAY) {
-//                // set start time on 13:00
-//                timeForRows = timeFormat.parse("13:00");
-//            } else {
-//                // set start time on 16:00
-//                timeForRows = timeFormat.parse("16:00");
-//            }
-//
-//            // insert time in each row and increments by 30 minutes
-//            for (int i = 0; i < model.getRowCount(); ++i) {
-//                model.setValueAt(timeFormat.format(timeForRows), i, 0);
-//
-//                long t = timeForRows.getTime();
-//                timeForRows = new Date(t + (30 * ONE_MINUTE_IN_MILLISECS));
-//            }
-//        } catch (ParseException ex) {
-//                Logger.getLogger(MainPresenter.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
 }
