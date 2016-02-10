@@ -5,45 +5,26 @@
  */
 package com.view;
 
-import com.view.interfaces.IEntriesView;
-import java.awt.Component;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Vector;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+import com.view.interfaces.IAllEntriesView;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ALEX
  */
-public class EntriesFrame extends AbstractChildFrame implements IEntriesView {
-
-    @Override
-    public void setDataTable(Vector<Vector<Object>> dataTable) {
-        DefaultTableModel defTableModel = (DefaultTableModel) jtblEntries.getModel();
-        clearTableModel(defTableModel);
-        addTableModelData(defTableModel, dataTable);
-    }
-
-    @Override
-    public void setCurentDate(Date date) {
-
-        String title = "Запись пациентов на ";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        jlblTitle.setText(title + dateFormat.format(date));
-    }
+public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntriesView {
 
     /**
      * Creates new form EntriesFrame
      */
-    public EntriesFrame() {
+    public AllEntriesFrame() {
         initComponents();
         setLocationRelativeTo(null);
         setChildCloseOperation();
-        setTableAlignments();
+        jtblEntries.getColumnModel().getColumn(0).setCellRenderer(getCenterCellRender());
+        jtblEntries.getColumnModel().getColumn(1).setCellRenderer(getCenterCellRender());
+        jtblEntries.getColumnModel().getColumn(7).setCellRenderer(getCenterCellRender());
+        tableModel = (DefaultTableModel) jtblEntries.getModel();
     }
 
     /**
@@ -66,21 +47,21 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView {
 
         jlblTitle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jlblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlblTitle.setText(" ");
+        jlblTitle.setText("Все записи пациентов");
 
         jtblEntries.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Время приема", "Фамилия", "Имя", "Отчество", "Телефон", "E-mail", "Размер обуви", "Модель товара"
+                "Дата приема", "Время приема", "Фамилия", "Имя", "Отчество", "Телефон", "E-mail", "Размер обуви", "Модель товара"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Short.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -111,7 +92,7 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jscrollEntries, javax.swing.GroupLayout.DEFAULT_SIZE, 991, Short.MAX_VALUE)
+                    .addComponent(jscrollEntries, javax.swing.GroupLayout.DEFAULT_SIZE, 1092, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jbtnClose)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -123,10 +104,10 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView {
                 .addContainerGap()
                 .addComponent(jlblTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jscrollEntries, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jscrollEntries, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnClose)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -142,41 +123,4 @@ public class EntriesFrame extends AbstractChildFrame implements IEntriesView {
     private javax.swing.JScrollPane jscrollEntries;
     private javax.swing.JTable jtblEntries;
     // End of variables declaration//GEN-END:variables
-
-    private void setTableAlignments() {
-        DefaultTableCellRenderer centerRender = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table,
-                    Object value,
-                    boolean isSelected,
-                    boolean hasFocus,
-                    int row,
-                    int column) {
-                super.setHorizontalAlignment(SwingConstants.CENTER);
-                super.getTableCellRendererComponent(table,
-                        value,
-                        isSelected,
-                        hasFocus,
-                        row,
-                        column);
-                return this;
-            }
-        };
-
-        jtblEntries.getColumnModel().getColumn(0).setCellRenderer(centerRender);
-        jtblEntries.getColumnModel().getColumn(6).setCellRenderer(centerRender);
-    }
-
-    private void clearTableModel(DefaultTableModel model) {
-        while (model.getRowCount() > 0) {
-            model.removeRow(0);
-        }
-    }
-
-    private void addTableModelData(DefaultTableModel model,
-            Vector<Vector<Object>> dataTable) {
-        for (Vector<Object> row : dataTable) {
-            model.addRow(row);
-        }
-    }
 }

@@ -3,21 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.presenter.interfaces;
+package com.view.interfaces;
+
+import java.util.Date;
 
 /**
  *
  * @author ALEX
  */
-public interface IPresenter {
+public interface IDateEntriesView extends IEntriesView {
 
-    void showDateEntries();
-
-    void showAllEntries();
-
-    void showCalendar();
-
-    void showConnect();
-
-    void createConnection();
+    void setCurentDate(Date date);
 }

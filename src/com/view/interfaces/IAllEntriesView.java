@@ -5,13 +5,10 @@
  */
 package com.view.interfaces;
 
-import java.util.Vector;
-
 /**
  *
  * @author AlexeiArtemov
  */
-public interface IEntriesView extends IView {
-
-    void setDataTable(Vector<Vector<Object>> dataTable);
+public interface IAllEntriesView extends IEntriesView {
+    // TODO: future functionality
 }

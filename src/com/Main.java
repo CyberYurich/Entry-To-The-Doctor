@@ -11,12 +11,14 @@ import com.model.MySqlDbModel;
 import com.model.interfaces.IDbModel;
 import com.presenter.MainPresenter;
 import com.presenter.interfaces.IPresenter;
+import com.view.AllEntriesFrame;
 import com.view.CalendarFrame;
 import com.view.ConnectFrame;
-import com.view.EntriesFrame;
+import com.view.DateEntriesFrame;
+import com.view.interfaces.IAllEntriesView;
 import com.view.interfaces.ICalendarView;
 import com.view.interfaces.IConnectView;
-import com.view.interfaces.IEntriesView;
+import com.view.interfaces.IDateEntriesView;
 
 /**
  *
@@ -31,14 +33,16 @@ public class Main {
             public void run() {
                 IDbModel dbModel = new MySqlDbModel();
                 ICalendarView calendarView = new CalendarFrame();
-                IEntriesView entriesView = new EntriesFrame();
+                IDateEntriesView dateEntriesView = new DateEntriesFrame();
+                IAllEntriesView allEntriesView = new AllEntriesFrame();
                 IConnectView connectView = new ConnectFrame();
                 IMessageService messageService = new MessageService();
 
                 IPresenter presenter = new MainPresenter(
                         dbModel,
                         calendarView,
-                        entriesView,
+                        dateEntriesView,
+                        allEntriesView,
                         connectView,
                         messageService);
 

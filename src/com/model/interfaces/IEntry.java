@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author AlexeiArtemov
  */
-public interface IEntry {
+public interface IEntry extends Comparable<IEntry> {
 
     public int getId();
 

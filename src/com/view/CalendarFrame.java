@@ -7,7 +7,6 @@ package com.view;
 
 import com.exceptions.WrongDayOfWeekException;
 import com.view.interfaces.ICalendarView;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -16,33 +15,35 @@ import java.util.GregorianCalendar;
  *
  * @author ALEX
  */
-public class CalendarFrame extends AbstractFrame implements ICalendarView{
+public class CalendarFrame extends AbstractFrame implements ICalendarView {
 
     @Override
-    public Date getCheckedDate() throws WrongDayOfWeekException{
+    public Date getCheckedDate() throws WrongDayOfWeekException {
         Date date = jCalendar.getDate();
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        
+
         switch (dayOfWeek) {
-            case Calendar.SUNDAY :
-                throw new WrongDayOfWeekException();    
-            default :
+            case Calendar.SUNDAY:
+                throw new WrongDayOfWeekException();
+            default:
                 return date;
         }
     }
 
     @Override
     public void lockEntriesView() {
-        jbtnShowEntries.setEnabled(false);
+        jbtnShowDateEntries.setEnabled(false);
+        jbtnShowAllEntries.setEnabled(false);
     }
 
     @Override
     public void unlockEntriesView() {
-        jbtnShowEntries.setEnabled(true);
+        jbtnShowDateEntries.setEnabled(true);
+        jbtnShowAllEntries.setEnabled(true);
     }
-    
+
     /**
      * Creates new form CalendarFrame
      */
@@ -61,19 +62,20 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView{
     private void initComponents() {
 
         jCalendar = new com.toedter.calendar.JCalendar();
-        jbtnShowEntries = new javax.swing.JButton();
+        jbtnShowDateEntries = new javax.swing.JButton();
         jbtnConnectToDb = new javax.swing.JButton();
+        jbtnShowAllEntries = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Календарь записей на прием к врачу");
 
         jCalendar.setDate(new java.util.Date());
 
-        jbtnShowEntries.setText("Показать записи");
-        jbtnShowEntries.setEnabled(false);
-        jbtnShowEntries.addActionListener(new java.awt.event.ActionListener() {
+        jbtnShowDateEntries.setText("Показать записи на дату");
+        jbtnShowDateEntries.setEnabled(false);
+        jbtnShowDateEntries.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnShowEntriesActionPerformed(evt);
+                jbtnShowDateEntriesActionPerformed(evt);
             }
         });
 
@@ -81,6 +83,14 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView{
         jbtnConnectToDb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnConnectToDbActionPerformed(evt);
+            }
+        });
+
+        jbtnShowAllEntries.setText("Показать все записи");
+        jbtnShowAllEntries.setEnabled(false);
+        jbtnShowAllEntries.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnShowAllEntriesActionPerformed(evt);
             }
         });
 
@@ -93,7 +103,10 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCalendar, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jbtnShowEntries)
+                        .addComponent(jbtnShowDateEntries)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbtnShowAllEntries)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbtnConnectToDb)))
                 .addContainerGap())
@@ -102,29 +115,36 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCalendar, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addComponent(jCalendar, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbtnShowDateEntries)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtnShowEntries)
-                    .addComponent(jbtnConnectToDb))
+                    .addComponent(jbtnConnectToDb)
+                    .addComponent(jbtnShowAllEntries))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbtnShowEntriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnShowEntriesActionPerformed
-        presenter.showEntries();
-    }//GEN-LAST:event_jbtnShowEntriesActionPerformed
+    private void jbtnShowDateEntriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnShowDateEntriesActionPerformed
+        presenter.showDateEntries();
+    }//GEN-LAST:event_jbtnShowDateEntriesActionPerformed
 
     private void jbtnConnectToDbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnConnectToDbActionPerformed
         presenter.showConnect();
     }//GEN-LAST:event_jbtnConnectToDbActionPerformed
 
+    private void jbtnShowAllEntriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnShowAllEntriesActionPerformed
+        presenter.showAllEntries();
+    }//GEN-LAST:event_jbtnShowAllEntriesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JCalendar jCalendar;
     private javax.swing.JButton jbtnConnectToDb;
-    private javax.swing.JButton jbtnShowEntries;
+    private javax.swing.JButton jbtnShowAllEntries;
+    private javax.swing.JButton jbtnShowDateEntries;
     // End of variables declaration//GEN-END:variables
 
 }

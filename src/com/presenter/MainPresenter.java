@@ -10,13 +10,15 @@ import com.messageServise.interfaces.IMessageService;
 import com.model.interfaces.IDbModel;
 import com.model.interfaces.IEntry;
 import com.presenter.interfaces.IPresenter;
+import com.view.interfaces.IAllEntriesView;
 import com.view.interfaces.ICalendarView;
 import com.view.interfaces.IConnectView;
-import com.view.interfaces.IEntriesView;
+import com.view.interfaces.IDateEntriesView;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -33,38 +35,42 @@ public class MainPresenter implements IPresenter {
 
     private final IDbModel dbModel;
     private final ICalendarView calendarView;
-    private final IEntriesView entriesView;
+    private final IDateEntriesView dateEntriesView;
+    private final IAllEntriesView allEntriesView;
     private final IConnectView connectView;
     private final IMessageService messageService;
 
     public MainPresenter(IDbModel dbModel,
             ICalendarView calendarView,
-            IEntriesView entriesView,
+            IDateEntriesView dateEntriesView,
+            IAllEntriesView allEntriesView,
             IConnectView connectView,
             IMessageService messageService) {
         this.dbModel = dbModel;
         this.calendarView = calendarView;
-        this.entriesView = entriesView;
+        this.dateEntriesView = dateEntriesView;
+        this.allEntriesView = allEntriesView;
         this.connectView = connectView;
         this.messageService = messageService;
 
         calendarView.setPresenter(this);
+        dateEntriesView.setPresenter(this);
+        allEntriesView.setPresenter(this);
         connectView.setPresenter(this);
-        entriesView.setPresenter(this);
     }
 
     @Override
-    public void showEntries() {
+    public void showDateEntries() {
         try {
             Date date = calendarView.getCheckedDate();
 
             Vector<Vector<Object>> dataTable = makeDataTableByDate(date);
 
-            entriesView.setDataTable(dataTable);
-            entriesView.setCurentDate(date);
+            dateEntriesView.setDataTable(dataTable);
+            dateEntriesView.setCurentDate(date);
 
             calendarView.closeView();
-            entriesView.showView();
+            dateEntriesView.showView();
 
         } catch (WrongDayOfWeekException ex) {
             messageService.showError(new StringBuilder(90)
@@ -84,8 +90,30 @@ public class MainPresenter implements IPresenter {
     }
 
     @Override
+    public void showAllEntries() {
+        try {
+            Vector<Vector<Object>> dataTable = makeAllDataTable();
+
+            allEntriesView.setDataTable(dataTable);
+
+            calendarView.closeView();
+            allEntriesView.showView();
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            messageService.showError(new StringBuilder(70)
+                    .append("Соединение с базой данных утеряно\n")
+                    .append("или некорректная таблица с данными.")
+                    .toString(),
+                    "Ошибка подключения");
+
+            calendarView.lockEntriesView();
+        }
+    }
+
+    @Override
     public void showCalendar() {
-        entriesView.closeView();
+        dateEntriesView.closeView();
+        allEntriesView.closeView();
         connectView.closeView();
         calendarView.showView();
     }
@@ -166,5 +194,29 @@ public class MainPresenter implements IPresenter {
         }
 
         return timesList;
+    }
+
+    private Vector<Vector<Object>> makeAllDataTable()
+            throws SQLException, ClassNotFoundException {
+
+        Vector<Vector<Object>> dataTable = new Vector<>();
+        List<IEntry> entriesList = dbModel.readAll();
+        Collections.sort(entriesList);
+
+        for (IEntry entry : entriesList) {
+            Vector<Object> row = new Vector<>();
+            row.add(entry.getDate());
+            row.add(entry.getTime());
+            row.add(entry.getLastname());
+            row.add(entry.getFirstname());
+            row.add(entry.getMiddlename());
+            row.add(entry.getPhone());
+            row.add(entry.getEmail());
+            row.add(entry.getShoeSize());
+            row.add(entry.getProductModel());
+            dataTable.add(row);
+        }
+
+        return dataTable;
     }
 }

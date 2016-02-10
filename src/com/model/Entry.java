@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author ALEX
  */
-public class Entry implements IEntry, Comparable<Entry> {
+public class Entry implements IEntry {
 
     private int id;
     private Date date;
@@ -130,11 +130,11 @@ public class Entry implements IEntry, Comparable<Entry> {
     }
 
     @Override
-    public int compareTo(Entry o) {
-        int result = this.date.compareTo(o.date);
+    public int compareTo(IEntry o) {
+        int result = this.date.compareTo(o.getDate());
         if (result != 0) {
             return result;
         }
-        return this.time.compareTo(o.time);
+        return this.time.compareTo(o.getTime());
     }
 }

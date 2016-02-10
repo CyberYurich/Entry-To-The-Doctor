@@ -13,11 +13,11 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
  *
  * @author ALEX
  */
-public abstract class AbstractChildFrame extends AbstractFrame{
-    
-    void setChildCloseOperation() {
+public abstract class AbstractChildFrame extends AbstractFrame {
+
+    protected void setChildCloseOperation() {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
