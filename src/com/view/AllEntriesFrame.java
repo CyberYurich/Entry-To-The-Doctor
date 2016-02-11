@@ -6,7 +6,6 @@
 package com.view;
 
 import com.view.interfaces.IAllEntriesView;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,10 +20,10 @@ public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntries
         initComponents();
         setLocationRelativeTo(null);
         setChildCloseOperation();
+        tableModel.hideColumn(0);
         jtblEntries.getColumnModel().getColumn(0).setCellRenderer(getCenterCellRender());
         jtblEntries.getColumnModel().getColumn(1).setCellRenderer(getCenterCellRender());
         jtblEntries.getColumnModel().getColumn(7).setCellRenderer(getCenterCellRender());
-        tableModel = (DefaultTableModel) jtblEntries.getModel();
     }
 
     /**
@@ -49,29 +48,7 @@ public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntries
         jlblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlblTitle.setText("Все записи пациентов");
 
-        jtblEntries.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Дата приема", "Время приема", "Фамилия", "Имя", "Отчество", "Телефон", "E-mail", "Размер обуви", "Модель товара"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        jtblEntries.setModel(tableModel);
         jtblEntries.setFillsViewportHeight(true);
         jtblEntries.setName(""); // NOI18N
         jtblEntries.setRowHeight(20);

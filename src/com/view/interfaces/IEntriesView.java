@@ -5,7 +5,8 @@
  */
 package com.view.interfaces;
 
-import java.util.Vector;
+import com.model.interfaces.IEntry;
+import java.util.List;
 
 /**
  *
@@ -13,5 +14,5 @@ import java.util.Vector;
  */
 public interface IEntriesView extends IView {
 
-    void setDataTable(Vector<Vector<Object>> dataTable);
+    void setDataTable(List<IEntry> entriesList);
 }

@@ -5,13 +5,14 @@
  */
 package com.view;
 
+import com.model.EntriesTableModel;
+import com.model.interfaces.IEntry;
 import com.view.interfaces.IEntriesView;
 import java.awt.Component;
-import java.util.Vector;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,12 +20,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public abstract class AbstractEntriesFrame extends AbstractChildFrame implements IEntriesView {
 
-    protected DefaultTableModel tableModel;
+    protected EntriesTableModel tableModel = new EntriesTableModel();
 
     @Override
-    public void setDataTable(Vector<Vector<Object>> dataTable) {
-        clearTableModel(tableModel);
-        addTableModelData(tableModel, dataTable);
+    public void setDataTable(List<IEntry> entriesList) {
+        tableModel.setData(entriesList);
+        tableModel.fireTableDataChanged();
     }
 
     protected DefaultTableCellRenderer getCenterCellRender() {
@@ -47,18 +48,5 @@ public abstract class AbstractEntriesFrame extends AbstractChildFrame implements
             }
         };
         return centerRender;
-    }
-
-    private void clearTableModel(DefaultTableModel model) {
-        while (model.getRowCount() > 0) {
-            model.removeRow(0);
-        }
-    }
-
-    private void addTableModelData(DefaultTableModel model,
-            Vector<Vector<Object>> dataTable) {
-        for (Vector<Object> row : dataTable) {
-            model.addRow(row);
-        }
     }
 }

@@ -7,6 +7,7 @@ package com.presenter;
 
 import com.exceptions.WrongDayOfWeekException;
 import com.messageServise.interfaces.IMessageService;
+import com.model.Entry;
 import com.model.interfaces.IDbModel;
 import com.model.interfaces.IEntry;
 import com.presenter.interfaces.IPresenter;
@@ -22,7 +23,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Vector;
 
 /**
  *
@@ -64,9 +64,8 @@ public class MainPresenter implements IPresenter {
         try {
             Date date = calendarView.getCheckedDate();
 
-            Vector<Vector<Object>> dataTable = makeDataTableByDate(date);
-
-            dateEntriesView.setDataTable(dataTable);
+            List<IEntry> entriesList = makeEntriesListByDate(date);
+            dateEntriesView.setDataTable(entriesList);
             dateEntriesView.setCurentDate(date);
 
             calendarView.closeView();
@@ -92,9 +91,9 @@ public class MainPresenter implements IPresenter {
     @Override
     public void showAllEntries() {
         try {
-            Vector<Vector<Object>> dataTable = makeAllDataTable();
-
-            allEntriesView.setDataTable(dataTable);
+            List<IEntry> entriesList = dbModel.readAll();
+            Collections.sort(entriesList);
+            allEntriesView.setDataTable(entriesList);
 
             calendarView.closeView();
             allEntriesView.showView();
@@ -139,37 +138,30 @@ public class MainPresenter implements IPresenter {
         }
     }
 
-    private Vector<Vector<Object>> makeDataTableByDate(Date date)
+    private List<IEntry> makeEntriesListByDate(Date date)
             throws SQLException, ClassNotFoundException {
 
-        Vector<Vector<Object>> dataTable = new Vector<>();
+        List<IEntry> resultList = new ArrayList<>();
         List<IEntry> entriesList = dbModel.readByDate(date);
         List<Time> timesList = makeTimesForDataTable(date);
 
         for (Time time : timesList) {
-            Vector<Object> row = new Vector<>();
             boolean wasFound = false;
             for (IEntry entry : entriesList) {
                 if (!time.before(entry.getTime()) && !time.after(entry.getTime())) {
-                    row.add(entry.getTime());
-                    row.add(entry.getLastname());
-                    row.add(entry.getFirstname());
-                    row.add(entry.getMiddlename());
-                    row.add(entry.getPhone());
-                    row.add(entry.getEmail());
-                    row.add(entry.getShoeSize());
-                    row.add(entry.getProductModel());
+                    resultList.add(entry);
                     wasFound = true;
                     break;
                 }
             }
             if (!wasFound) {
-                row.add(time);
+                IEntry entry = new Entry();
+                entry.setTime(time);
+                resultList.add(entry);
             }
-            dataTable.add(row);
         }
 
-        return dataTable;
+        return resultList;
     }
 
     private List<Time> makeTimesForDataTable(Date date) {
@@ -194,29 +186,5 @@ public class MainPresenter implements IPresenter {
         }
 
         return timesList;
-    }
-
-    private Vector<Vector<Object>> makeAllDataTable()
-            throws SQLException, ClassNotFoundException {
-
-        Vector<Vector<Object>> dataTable = new Vector<>();
-        List<IEntry> entriesList = dbModel.readAll();
-        Collections.sort(entriesList);
-
-        for (IEntry entry : entriesList) {
-            Vector<Object> row = new Vector<>();
-            row.add(entry.getDate());
-            row.add(entry.getTime());
-            row.add(entry.getLastname());
-            row.add(entry.getFirstname());
-            row.add(entry.getMiddlename());
-            row.add(entry.getPhone());
-            row.add(entry.getEmail());
-            row.add(entry.getShoeSize());
-            row.add(entry.getProductModel());
-            dataTable.add(row);
-        }
-
-        return dataTable;
     }
 }

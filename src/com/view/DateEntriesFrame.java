@@ -8,7 +8,6 @@ package com.view;
 import com.view.interfaces.IDateEntriesView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -31,9 +30,10 @@ public class DateEntriesFrame extends AbstractEntriesFrame implements IDateEntri
         initComponents();
         setLocationRelativeTo(null);
         setChildCloseOperation();
+        tableModel.hideColumn(0);
+        tableModel.hideColumn(1);
         jtblEntries.getColumnModel().getColumn(0).setCellRenderer(getCenterCellRender());
         jtblEntries.getColumnModel().getColumn(6).setCellRenderer(getCenterCellRender());
-        tableModel = (DefaultTableModel) jtblEntries.getModel();
     }
 
     /**
@@ -58,29 +58,7 @@ public class DateEntriesFrame extends AbstractEntriesFrame implements IDateEntri
         jlblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlblTitle.setText(" ");
 
-        jtblEntries.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Время приема", "Фамилия", "Имя", "Отчество", "Телефон", "E-mail", "Размер обуви", "Модель товара"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Short.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        jtblEntries.setModel(tableModel);
         jtblEntries.setFillsViewportHeight(true);
         jtblEntries.setName(""); // NOI18N
         jtblEntries.setRowHeight(20);
