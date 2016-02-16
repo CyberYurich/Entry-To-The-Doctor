@@ -10,8 +10,13 @@ package com.messageServise.interfaces;
  * @author ALEX
  */
 public interface IMessageService {
+
     void showError(String message, String title);
+
     void showInformation(String message, String title);
+
     void showWarning(String message, String title);
+
+    boolean showYesNoQuestion(String message, String title);
 
 }
