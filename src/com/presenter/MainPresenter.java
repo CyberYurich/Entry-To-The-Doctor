@@ -16,6 +16,7 @@ import com.view.interfaces.IAllEntriesView;
 import com.view.interfaces.ICalendarView;
 import com.view.interfaces.IConnectView;
 import com.view.interfaces.IDateEntriesView;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,6 +27,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -149,25 +152,20 @@ public class MainPresenter implements IPresenter {
     @Override
     public void exportToExcel() {
 
-        try (FileOutputStream fileExcel = new FileOutputStream("Entries.xls");
-                Workbook workbook = new HSSFWorkbook();) {
+        try (Workbook workbook = new HSSFWorkbook();) {
 
+            // read entries from db
             List<IEntry> entriesList = dbModel.readAll();
             Collections.sort(entriesList);
 
+            // create table model of entries
             EntriesTableModel tableModel = new EntriesTableModel();
             tableModel.setData(entriesList);
 
+            // create excel objects
             Sheet sheet = workbook.createSheet("Таблица записей к врачу");
             Row row;
             Cell cell;
-
-            // create headers
-            row = sheet.createRow(0);
-            for (int i = 0; i < tableModel.getColumnCount(); ++i) {
-                cell = row.createCell(i);
-                cell.setCellValue(tableModel.getColumnName(i));
-            }
 
             // create data
             for (int i = 0; i < tableModel.getRowCount(); ++i) {
@@ -175,14 +173,49 @@ public class MainPresenter implements IPresenter {
                 for (int j = 0; j < tableModel.getColumnCount(); ++j) {
                     cell = row.createCell(j);
                     cell.setCellValue(tableModel.getValueAt(i, j).toString());
-                    sheet.autoSizeColumn(j);
                 }
             }
-            workbook.write(fileExcel);
-            messageService.showInformation("Записи успешно записаны в файл Entries.xls",
-                    "Успешная запись");
-        } catch (IOException e) {
-            messageService.showError("Невозможно выполнить данную операцию.",
+
+            // create headers
+            row = sheet.createRow(0);
+            for (int i = 0; i < tableModel.getColumnCount(); ++i) {
+                cell = row.createCell(i);
+                cell.setCellValue(tableModel.getColumnName(i));
+                sheet.autoSizeColumn(i);
+            }
+
+            // create save file dialog
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "XLS files(Microsoft Excel)", "xls");
+            chooser.setFileFilter(filter);
+            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.setCurrentDirectory(new File("."));
+            chooser.setSelectedFile(new File("Entries.xls"));
+
+            // show save file dialog
+            if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                File excelFile = chooser.getSelectedFile();
+
+                if (excelFile.getName().endsWith(".xls")) {
+                    if (!excelFile.exists() || messageService.showYesNoQuestion("Перезаписать файл?",
+                            "Данный файл уже существует")) {
+
+                        // write data in file
+                        try (FileOutputStream out = new FileOutputStream(excelFile);) {
+                            workbook.write(out);
+                            messageService.showInformation("Данные успешно записаны в файл",
+                                    "Успешная запись");
+                        }
+                    }
+                } else {
+                    messageService.showError("Неправильный формат файла. Необходимо использовать .xls",
+                            "Неправильный формат файла");
+                }
+
+            }
+        } catch (IOException ex) {
+            messageService.showError("Невозможно выполнить запись.",
                     "Ошибка записи");
         } catch (SQLException | ClassNotFoundException ex) {
             messageService.showError(new StringBuilder(70)
