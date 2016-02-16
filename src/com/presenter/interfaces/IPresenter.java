@@ -22,4 +22,6 @@ public interface IPresenter {
     void createConnection();
 
     void exportToExcel();
+
+    void deleteEntry(int id);
 }

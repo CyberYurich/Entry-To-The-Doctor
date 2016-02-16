@@ -41,6 +41,7 @@ public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntries
         jscrollEntries = new javax.swing.JScrollPane();
         jtblEntries = new javax.swing.JTable();
         jbtnClose = new javax.swing.JButton();
+        jbtnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Таблица записей на прием к врачу");
@@ -63,6 +64,13 @@ public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntries
             }
         });
 
+        jbtnDelete.setText("Удалить запись");
+        jbtnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -74,6 +82,8 @@ public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntries
                     .addComponent(jscrollEntries, javax.swing.GroupLayout.DEFAULT_SIZE, 1092, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jbtnClose)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnDelete)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -85,7 +95,9 @@ public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntries
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jscrollEntries, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbtnClose)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnClose)
+                    .addComponent(jbtnDelete))
                 .addContainerGap())
         );
 
@@ -96,8 +108,17 @@ public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntries
         presenter.showCalendar();
     }//GEN-LAST:event_jbtnCloseActionPerformed
 
+    private void jbtnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeleteActionPerformed
+        int rowIndex = jtblEntries.getSelectedRow();
+        if (rowIndex != -1) {
+            presenter.deleteEntry(tableModel.getId(rowIndex));
+            presenter.showAllEntries();
+        }
+    }//GEN-LAST:event_jbtnDeleteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jbtnClose;
+    private javax.swing.JButton jbtnDelete;
     private javax.swing.JLabel jlblTitle;
     private javax.swing.JScrollPane jscrollEntries;
     private javax.swing.JTable jtblEntries;

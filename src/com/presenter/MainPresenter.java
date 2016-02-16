@@ -95,6 +95,7 @@ public class MainPresenter implements IPresenter {
                     .toString(),
                     "Ошибка подключения");
 
+            showCalendar();
             calendarView.lockEntriesView();
         }
     }
@@ -116,6 +117,7 @@ public class MainPresenter implements IPresenter {
                     .toString(),
                     "Ошибка подключения");
 
+            showCalendar();
             calendarView.lockEntriesView();
         }
     }
@@ -224,6 +226,22 @@ public class MainPresenter implements IPresenter {
                     .toString(),
                     "Ошибка подключения");
 
+            calendarView.lockEntriesView();
+        }
+    }
+
+    @Override
+    public void deleteEntry(int id) {
+        try {
+            dbModel.delete(id);
+        } catch (SQLException | ClassNotFoundException ex) {
+            messageService.showError(new StringBuilder(70)
+                    .append("Соединение с базой данных утеряно\n")
+                    .append("или некорректная таблица с данными.")
+                    .toString(),
+                    "Ошибка подключения");
+
+            showCalendar();
             calendarView.lockEntriesView();
         }
     }

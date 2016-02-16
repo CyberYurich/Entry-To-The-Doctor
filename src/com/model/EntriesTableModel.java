@@ -46,6 +46,10 @@ public class EntriesTableModel extends AbstractTableModel {
         this.data = data;
     }
 
+    public int getId(int rowIndex) {
+        return data.get(rowIndex).getId();
+    }
+
     @Override
     public int getRowCount() {
         return data.size();
