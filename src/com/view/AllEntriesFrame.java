@@ -6,6 +6,7 @@
 package com.view;
 
 import com.view.interfaces.IAllEntriesView;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -24,6 +25,7 @@ public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntries
         jtblEntries.getColumnModel().getColumn(0).setCellRenderer(getCenterCellRender());
         jtblEntries.getColumnModel().getColumn(1).setCellRenderer(getCenterCellRender());
         jtblEntries.getColumnModel().getColumn(7).setCellRenderer(getCenterCellRender());
+        jtblEntries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     /**

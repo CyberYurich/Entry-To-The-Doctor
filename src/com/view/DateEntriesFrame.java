@@ -8,6 +8,7 @@ package com.view;
 import com.view.interfaces.IDateEntriesView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -34,6 +35,7 @@ public class DateEntriesFrame extends AbstractEntriesFrame implements IDateEntri
         tableModel.hideColumn(1);
         jtblEntries.getColumnModel().getColumn(0).setCellRenderer(getCenterCellRender());
         jtblEntries.getColumnModel().getColumn(6).setCellRenderer(getCenterCellRender());
+        jtblEntries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     /**
