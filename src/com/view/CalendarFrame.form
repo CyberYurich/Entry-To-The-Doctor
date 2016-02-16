@@ -29,11 +29,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jCalendar" pref="404" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="jbtnShowDateEntries" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jbtnShowAllEntries" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jbtnExportExcel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jbtnShowAllEntries" min="-2" max="-2" attributes="0"/>
+                      <Component id="jbtnShowDateEntries" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jbtnConnectToDb" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -48,11 +49,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jCalendar" pref="236" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jbtnShowDateEntries" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jbtnShowDateEntries" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnConnectToDb" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jbtnConnectToDb" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnShowAllEntries" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnExportExcel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -91,6 +95,15 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnShowAllEntriesActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jbtnExportExcel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x412;&#x44b;&#x433;&#x440;&#x443;&#x437;&#x438;&#x442;&#x44c; &#x437;&#x430;&#x43f;&#x438;&#x441;&#x438; &#x432; Excel"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnExportExcelActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

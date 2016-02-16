@@ -20,4 +20,6 @@ public interface IPresenter {
     void showConnect();
 
     void createConnection();
+
+    void exportToExcel();
 }

@@ -7,6 +7,7 @@ package com.presenter;
 
 import com.exceptions.WrongDayOfWeekException;
 import com.messageServise.interfaces.IMessageService;
+import com.model.EntriesTableModel;
 import com.model.Entry;
 import com.model.interfaces.IDbModel;
 import com.model.interfaces.IEntry;
@@ -15,6 +16,8 @@ import com.view.interfaces.IAllEntriesView;
 import com.view.interfaces.ICalendarView;
 import com.view.interfaces.IConnectView;
 import com.view.interfaces.IDateEntriesView;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -23,6 +26,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
@@ -135,6 +143,55 @@ public class MainPresenter implements IPresenter {
         } catch (SQLException ex) {
             messageService.showError("Невозможно подключиться к базе данных.",
                     "Ошибка подключения");
+        }
+    }
+
+    @Override
+    public void exportToExcel() {
+
+        try (FileOutputStream fileExcel = new FileOutputStream("Entries.xls");
+                Workbook workbook = new HSSFWorkbook();) {
+
+            List<IEntry> entriesList = dbModel.readAll();
+            Collections.sort(entriesList);
+
+            EntriesTableModel tableModel = new EntriesTableModel();
+            tableModel.setData(entriesList);
+
+            Sheet sheet = workbook.createSheet("Таблица записей к врачу");
+            Row row;
+            Cell cell;
+
+            // create headers
+            row = sheet.createRow(0);
+            for (int i = 0; i < tableModel.getColumnCount(); ++i) {
+                cell = row.createCell(i);
+                cell.setCellValue(tableModel.getColumnName(i));
+            }
+
+            // create data
+            for (int i = 0; i < tableModel.getRowCount(); ++i) {
+                row = sheet.createRow(i + 1);
+                for (int j = 0; j < tableModel.getColumnCount(); ++j) {
+                    cell = row.createCell(j);
+                    cell.setCellValue(tableModel.getValueAt(i, j).toString());
+                    sheet.autoSizeColumn(j);
+                }
+            }
+            workbook.write(fileExcel);
+            messageService.showInformation("Записи успешно записаны в файл Entries.xls",
+                    "Успешная запись");
+        } catch (IOException e) {
+            messageService.showError("Невозможно выполнить данную операцию.",
+                    "Ошибка записи");
+        } catch (SQLException | ClassNotFoundException ex) {
+            messageService.showError(new StringBuilder(70)
+                    .append("Соединение с базой данных утеряно\n")
+                    .append("или некорректная таблица с данными.")
+                    .toString(),
+                    "Ошибка подключения");
+
+            calendarView.lockEntriesView();
         }
     }
 

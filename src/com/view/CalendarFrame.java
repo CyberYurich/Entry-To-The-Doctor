@@ -36,12 +36,14 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView {
     public void lockEntriesView() {
         jbtnShowDateEntries.setEnabled(false);
         jbtnShowAllEntries.setEnabled(false);
+        jbtnExportExcel.setEnabled(false);
     }
 
     @Override
     public void unlockEntriesView() {
         jbtnShowDateEntries.setEnabled(true);
         jbtnShowAllEntries.setEnabled(true);
+        jbtnExportExcel.setEnabled(true);
     }
 
     /**
@@ -65,6 +67,7 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView {
         jbtnShowDateEntries = new javax.swing.JButton();
         jbtnConnectToDb = new javax.swing.JButton();
         jbtnShowAllEntries = new javax.swing.JButton();
+        jbtnExportExcel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Календарь записей на прием к врачу");
@@ -94,6 +97,14 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView {
             }
         });
 
+        jbtnExportExcel.setText("Выгрузить записи в Excel");
+        jbtnExportExcel.setEnabled(false);
+        jbtnExportExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnExportExcelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,10 +114,11 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCalendar, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jbtnShowDateEntries)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jbtnShowAllEntries)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtnExportExcel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbtnShowDateEntries)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbtnConnectToDb)))
                 .addContainerGap())
@@ -117,11 +129,13 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView {
                 .addContainerGap()
                 .addComponent(jCalendar, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbtnShowDateEntries)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnShowDateEntries)
+                    .addComponent(jbtnConnectToDb))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtnConnectToDb)
-                    .addComponent(jbtnShowAllEntries))
+                    .addComponent(jbtnShowAllEntries)
+                    .addComponent(jbtnExportExcel))
                 .addContainerGap())
         );
 
@@ -140,9 +154,14 @@ public class CalendarFrame extends AbstractFrame implements ICalendarView {
         presenter.showAllEntries();
     }//GEN-LAST:event_jbtnShowAllEntriesActionPerformed
 
+    private void jbtnExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnExportExcelActionPerformed
+        presenter.exportToExcel();
+    }//GEN-LAST:event_jbtnExportExcelActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JCalendar jCalendar;
     private javax.swing.JButton jbtnConnectToDb;
+    private javax.swing.JButton jbtnExportExcel;
     private javax.swing.JButton jbtnShowAllEntries;
     private javax.swing.JButton jbtnShowDateEntries;
     // End of variables declaration//GEN-END:variables
