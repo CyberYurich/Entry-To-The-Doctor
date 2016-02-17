@@ -233,7 +233,9 @@ public class MainPresenter implements IPresenter {
     @Override
     public void deleteEntry(int id) {
         try {
-            dbModel.delete(id);
+            if (messageService.showYesNoQuestion("Удалить выранную запись?", "Удаление")) {
+                dbModel.delete(id);
+            }
         } catch (SQLException | ClassNotFoundException ex) {
             messageService.showError(new StringBuilder(70)
                     .append("Соединение с базой данных утеряно\n")
