@@ -11,6 +11,13 @@ import java.util.List;
  *
  * @author ALEX
  */
-public interface IConnectView extends IView{
+public interface IConnectView extends IView {
+
     List<String> getConnectParameters();
+
+    void setConnectParameters(List<String> parametersList);
+
+    boolean saveParametersChecked();
+
+    void setSaveParametersCheckBox(boolean isSelected);
 }

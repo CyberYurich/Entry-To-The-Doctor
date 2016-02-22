@@ -6,7 +6,6 @@
 package com.view;
 
 import com.view.interfaces.IConnectView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @author ALEX
  */
 public class ConnectFrame extends AbstractChildFrame implements IConnectView {
-    
+
     @Override
     public List<String> getConnectParameters() {
         List<String> parameters = new ArrayList<>();
@@ -23,8 +22,26 @@ public class ConnectFrame extends AbstractChildFrame implements IConnectView {
         parameters.add(jtxtPort.getText());
         parameters.add(jtxtUsername.getText());
         parameters.add(new String(jtxtPassword.getPassword()));
-        
+
         return parameters;
+    }
+
+    @Override
+    public void setConnectParameters(List<String> parametersList) {
+        jtxtHostname.setText(parametersList.get(0));
+        jtxtPort.setText(parametersList.get(1));
+        jtxtUsername.setText(parametersList.get(2));
+        jtxtPassword.setText(parametersList.get(3));
+    }
+
+    @Override
+    public boolean saveParametersChecked() {
+        return jcbxSaveParameters.isSelected();
+    }
+
+    @Override
+    public void setSaveParametersCheckBox(boolean isSelected) {
+        jcbxSaveParameters.setSelected(isSelected);
     }
 
     /**
@@ -55,6 +72,7 @@ public class ConnectFrame extends AbstractChildFrame implements IConnectView {
         jtxtUsername = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jtxtPassword = new javax.swing.JPasswordField();
+        jcbxSaveParameters = new javax.swing.JCheckBox();
         jbtnConnect = new javax.swing.JButton();
         jbtnCancel = new javax.swing.JButton();
 
@@ -64,24 +82,19 @@ public class ConnectFrame extends AbstractChildFrame implements IConnectView {
 
         jpnlConnect.setToolTipText("");
 
-        jLabel1.setText("Введите данные для подключения:");
+        jLabel1.setText("Введите параметры для подключения:");
 
         jLabel2.setText("hostname");
-
-        jtxtHostname.setText("localhost");
 
         jLabel3.setText("port");
 
         jtxtPort.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        jtxtPort.setText("3306");
 
         jLabel4.setText("username");
 
-        jtxtUsername.setText("root");
-
         jLabel5.setText("password");
 
-        jtxtPassword.setText("root");
+        jcbxSaveParameters.setText("Сохранить параметры");
 
         javax.swing.GroupLayout jpnlConnectLayout = new javax.swing.GroupLayout(jpnlConnect);
         jpnlConnect.setLayout(jpnlConnectLayout);
@@ -89,23 +102,25 @@ public class ConnectFrame extends AbstractChildFrame implements IConnectView {
             jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpnlConnectLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jpnlConnectLayout.createSequentialGroup()
-                        .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtxtHostname))
-                    .addGroup(jpnlConnectLayout.createSequentialGroup()
-                        .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtxtPort)
-                            .addComponent(jtxtUsername)
-                            .addComponent(jtxtPassword)))
-                    .addComponent(jLabel1))
+                .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jpnlConnectLayout.createSequentialGroup()
+                            .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jtxtHostname))
+                        .addGroup(jpnlConnectLayout.createSequentialGroup()
+                            .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel5))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jtxtPort)
+                                .addComponent(jtxtUsername)
+                                .addComponent(jtxtPassword)))
+                        .addComponent(jLabel1))
+                    .addComponent(jcbxSaveParameters))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpnlConnectLayout.setVerticalGroup(
@@ -129,7 +144,8 @@ public class ConnectFrame extends AbstractChildFrame implements IConnectView {
                 .addGroup(jpnlConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jtxtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jcbxSaveParameters))
         );
 
         jbtnConnect.setText("Подключиться");
@@ -193,6 +209,7 @@ public class ConnectFrame extends AbstractChildFrame implements IConnectView {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JButton jbtnCancel;
     private javax.swing.JButton jbtnConnect;
+    private javax.swing.JCheckBox jcbxSaveParameters;
     private javax.swing.JPanel jpnlConnect;
     private javax.swing.JTextField jtxtHostname;
     private javax.swing.JPasswordField jtxtPassword;

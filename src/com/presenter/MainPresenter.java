@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -51,6 +53,8 @@ public class MainPresenter implements IPresenter {
     private final IConnectView connectView;
     private final IMessageService messageService;
 
+    private final Preferences userPreferences;
+
     public MainPresenter(IDbModel dbModel,
             ICalendarView calendarView,
             IDateEntriesView dateEntriesView,
@@ -68,6 +72,8 @@ public class MainPresenter implements IPresenter {
         dateEntriesView.setPresenter(this);
         allEntriesView.setPresenter(this);
         connectView.setPresenter(this);
+
+        this.userPreferences = Preferences.userRoot().node("doctor");
     }
 
     @Override
@@ -132,6 +138,14 @@ public class MainPresenter implements IPresenter {
 
     @Override
     public void showConnect() {
+        List<String> parametersList = new ArrayList<>();
+        parametersList.add(userPreferences.get("hostname", "localhost"));
+        parametersList.add(userPreferences.get("port", "3306"));
+        parametersList.add(userPreferences.get("username", "root"));
+        parametersList.add(userPreferences.get("password", "root"));
+        connectView.setConnectParameters(parametersList);
+        connectView.setSaveParametersCheckBox(userPreferences.getBoolean("save_parameters", false));
+
         calendarView.closeView();
         connectView.showView();
     }
@@ -140,14 +154,28 @@ public class MainPresenter implements IPresenter {
     public void createConnection() {
 
         try {
-            dbModel.setConnectionParameters(connectView.getConnectParameters());
+            List<String> connectParameters = connectView.getConnectParameters();
+            dbModel.setConnectionParameters(connectParameters);
             messageService.showInformation("Соединение с базой данных установлено.",
                     "Успешное подключение");
             calendarView.unlockEntriesView();
             showCalendar();
+
+            if (connectView.saveParametersChecked()) {
+                userPreferences.put("hostname", connectParameters.get(0));
+                userPreferences.put("port", connectParameters.get(1));
+                userPreferences.put("username", connectParameters.get(2));
+                userPreferences.put("password", connectParameters.get(3));
+                userPreferences.putBoolean("save_parameters", true);
+            } else {
+                userPreferences.clear();
+            }
         } catch (SQLException ex) {
             messageService.showError("Невозможно подключиться к базе данных.",
                     "Ошибка подключения");
+        } catch (BackingStoreException ex) {
+            messageService.showWarning("Неудалось сбросить параметры подключения.",
+                    "Предупреждение");
         }
     }
 
