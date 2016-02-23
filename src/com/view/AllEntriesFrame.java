@@ -111,8 +111,9 @@ public class AllEntriesFrame extends AbstractEntriesFrame implements IAllEntries
     private void jbtnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeleteActionPerformed
         int rowIndex = jtblEntries.getSelectedRow();
         if (rowIndex != -1) {
-            presenter.deleteEntry(tableModel.getId(rowIndex));
-            presenter.showAllEntries();
+            if (presenter.deleteEntry(tableModel.getId(rowIndex))) {
+                presenter.showAllEntries();
+            }
         }
     }//GEN-LAST:event_jbtnDeleteActionPerformed
 

@@ -23,5 +23,5 @@ public interface IPresenter {
 
     void exportToExcel();
 
-    void deleteEntry(int id);
+    boolean deleteEntry(int id);
 }

@@ -121,8 +121,9 @@ public class DateEntriesFrame extends AbstractEntriesFrame implements IDateEntri
     private void jbtnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeleteActionPerformed
         int rowIndex = jtblEntries.getSelectedRow();
         if (rowIndex != -1) {
-            presenter.deleteEntry(tableModel.getId(rowIndex));
-            presenter.showDateEntries();
+            if (presenter.deleteEntry(tableModel.getId(rowIndex))) {
+                presenter.showDateEntries();
+            }
         }
     }//GEN-LAST:event_jbtnDeleteActionPerformed
 
