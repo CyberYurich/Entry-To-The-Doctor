@@ -5,6 +5,8 @@
  */
 package com.presenter.interfaces;
 
+import com.model.interfaces.IEntry;
+
 /**
  *
  * @author ALEX
@@ -19,9 +21,13 @@ public interface IPresenter {
 
     void showConnect();
 
+    void showCreateEntry();
+
     void createConnection();
 
     void exportToExcel();
 
     boolean deleteEntry(int id);
+
+    void createEntry(IEntry entry);
 }

@@ -14,10 +14,12 @@ import com.presenter.interfaces.IPresenter;
 import com.view.AllEntriesFrame;
 import com.view.CalendarFrame;
 import com.view.ConnectFrame;
+import com.view.CreateEntryFrame;
 import com.view.DateEntriesFrame;
 import com.view.interfaces.IAllEntriesView;
 import com.view.interfaces.ICalendarView;
 import com.view.interfaces.IConnectView;
+import com.view.interfaces.ICreateEntryView;
 import com.view.interfaces.IDateEntriesView;
 
 /**
@@ -36,6 +38,7 @@ public class Main {
                 IDateEntriesView dateEntriesView = new DateEntriesFrame();
                 IAllEntriesView allEntriesView = new AllEntriesFrame();
                 IConnectView connectView = new ConnectFrame();
+                ICreateEntryView createEntryView = new CreateEntryFrame();
                 IMessageService messageService = new MessageService();
 
                 IPresenter presenter = new MainPresenter(
@@ -44,6 +47,7 @@ public class Main {
                         dateEntriesView,
                         allEntriesView,
                         connectView,
+                        createEntryView,
                         messageService);
 
                 presenter.showCalendar();

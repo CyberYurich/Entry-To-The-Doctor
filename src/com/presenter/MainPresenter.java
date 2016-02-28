@@ -15,6 +15,7 @@ import com.presenter.interfaces.IPresenter;
 import com.view.interfaces.IAllEntriesView;
 import com.view.interfaces.ICalendarView;
 import com.view.interfaces.IConnectView;
+import com.view.interfaces.ICreateEntryView;
 import com.view.interfaces.IDateEntriesView;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,6 +52,7 @@ public class MainPresenter implements IPresenter {
     private final IDateEntriesView dateEntriesView;
     private final IAllEntriesView allEntriesView;
     private final IConnectView connectView;
+    private final ICreateEntryView createEntryView;
     private final IMessageService messageService;
 
     private final Preferences userPreferences;
@@ -60,18 +62,21 @@ public class MainPresenter implements IPresenter {
             IDateEntriesView dateEntriesView,
             IAllEntriesView allEntriesView,
             IConnectView connectView,
+            ICreateEntryView createEntryView,
             IMessageService messageService) {
         this.dbModel = dbModel;
         this.calendarView = calendarView;
         this.dateEntriesView = dateEntriesView;
         this.allEntriesView = allEntriesView;
         this.connectView = connectView;
+        this.createEntryView = createEntryView;
         this.messageService = messageService;
 
         calendarView.setPresenter(this);
         dateEntriesView.setPresenter(this);
         allEntriesView.setPresenter(this);
         connectView.setPresenter(this);
+        createEntryView.setPresenter(this);
 
         this.userPreferences = Preferences.userRoot().node("doctor");
     }
@@ -133,6 +138,7 @@ public class MainPresenter implements IPresenter {
         dateEntriesView.closeView();
         allEntriesView.closeView();
         connectView.closeView();
+        createEntryView.closeView();
         calendarView.showView();
     }
 
@@ -148,6 +154,39 @@ public class MainPresenter implements IPresenter {
 
         calendarView.closeView();
         connectView.showView();
+    }
+
+    @Override
+    public void showCreateEntry() {
+        try {
+            Date date = calendarView.getCheckedDate();
+            createEntryView.setDate(date);
+            List<Time> timesList = makeFreeTimes(date);
+            if (!timesList.isEmpty()) {
+                createEntryView.setTimes(timesList);
+
+                calendarView.closeView();
+                createEntryView.showView();
+            } else {
+                messageService.showWarning("На данную дату не осталось свободного времени",
+                        "Очередь заполнена");
+            }
+        } catch (WrongDayOfWeekException ex) {
+            messageService.showError(new StringBuilder(90)
+                    .append("Выбран неправильный день недели.\n")
+                    .append("Воскресенье - неприемный день.")
+                    .toString(),
+                    "Неправильный день недели");
+        } catch (SQLException | ClassNotFoundException ex) {
+            messageService.showError(new StringBuilder(70)
+                    .append("Соединение с базой данных утеряно\n")
+                    .append("или некорректная таблица с данными.")
+                    .toString(),
+                    "Ошибка подключения");
+
+            calendarView.lockEntriesView();
+            showCalendar();
+        }
     }
 
     @Override
@@ -282,6 +321,25 @@ public class MainPresenter implements IPresenter {
         }
     }
 
+    @Override
+    public void createEntry(IEntry entry) {
+        try {
+            dbModel.create(entry);
+            messageService.showInformation("Запись успешно сохранена.",
+                    "Успешное сохранение");
+            showCalendar();
+        } catch (SQLException | ClassNotFoundException ex) {
+            messageService.showError(new StringBuilder(70)
+                    .append("Соединение с базой данных утеряно\n")
+                    .append("или некорректная таблица с данными.")
+                    .toString(),
+                    "Ошибка подключения");
+
+            calendarView.lockEntriesView();
+            showCalendar();
+        }
+    }
+
     private List<IEntry> makeEntriesListByDate(Date date)
             throws SQLException, ClassNotFoundException {
 
@@ -330,5 +388,28 @@ public class MainPresenter implements IPresenter {
         }
 
         return timesList;
+    }
+
+    private List<Time> makeFreeTimes(Date date)
+            throws SQLException, ClassNotFoundException {
+
+        List<Time> timesList = makeTimesForDataTable(date);
+        List<Time> resultList = new ArrayList<>();
+        List<IEntry> entriesList = dbModel.readByDate(date);
+
+        for (Time time : timesList) {
+            boolean wasFound = false;
+            for (IEntry entry : entriesList) {
+                if (!time.before(entry.getTime()) && !time.after(entry.getTime())) {
+                    wasFound = true;
+                    break;
+                }
+            }
+            if (!wasFound) {
+                resultList.add(time);
+            }
+        }
+
+        return resultList;
     }
 }
